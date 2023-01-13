@@ -12,6 +12,7 @@ Simple Telegram bot that uses OpenAI API to generate text like ChatGPT.
 ```
 BOT_TOKEN=your_bot_token
 BOT_USERNAME=your_test_bot
+BOT_ADMIN_ID=your_telegram_id
 OPENAI_KEY=your_openapi_key
 OPENAI_ORG_ID=your_openapi_org_id
 TELEGRAM_WHITELIST_USERNAMES=your_username    // add this config to restrict to specific users

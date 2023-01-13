@@ -1,5 +1,6 @@
 import { Telegraf } from 'telegraf';
 import { createChatCompletion } from "../openai/openAiService";
+import { notifyAlert, notifyError } from './notify';
 
 const botUsername = process.env.BOT_USERNAME;
 
@@ -16,6 +17,7 @@ bot.use(async (ctx: any, next: any) => {
   const isNotInWhitelist = !whitelist.includes(ctx.message.from.username);
   if (isNotInWhitelist) {
     await ctx.reply('You are not allowed to use this bot');
+    await notifyAlert(ctx.from.username, 'Not in whitelist');
     return;
   }
 
@@ -46,7 +48,8 @@ bot.command('/c', async (ctx: any) => {
     await ctx.telegram.editMessageText(ctx.chat.id, initMsg.message_id, undefined, msg);
   } catch (error: any) {
     console.log(error);
-    ctx.reply('Error: ' + error.message)
+    await ctx.reply('Error: ' + error.message)
+    await notifyError(ctx.from.username, error);
     return;
   }
 })
@@ -90,6 +93,7 @@ bot.on('inline_query', async (ctx: any) => {
     });    
   } catch (error: any) {
     console.log(error);
+    await notifyError(ctx.from.username, error);
     return;
   }
 });
