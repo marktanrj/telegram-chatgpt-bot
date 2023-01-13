@@ -14,7 +14,7 @@ bot.use(async (ctx: any, next: any) => {
   }
 
   const whitelist = process.env.TELEGRAM_WHITELIST_USERNAMES!.split(',');
-  const isNotInWhitelist = !whitelist.includes(ctx.message.from.username);
+  const isNotInWhitelist = !whitelist.includes(ctx.from.username);
   if (isNotInWhitelist) {
     await ctx.reply('You are not allowed to use this bot');
     await notifyAlert(ctx.from.username, 'Not in whitelist');
