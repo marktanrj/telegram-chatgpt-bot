@@ -1,4 +1,4 @@
-# Fast And Furious Bot
+# Telegram ChatGPT Bot
 
 Simple Telegram bot that uses OpenAI API to generate text like ChatGPT.
 
