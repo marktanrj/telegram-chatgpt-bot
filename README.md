@@ -14,6 +14,6 @@ Simple Telegram bot that uses OpenAI API to generate text like ChatGPT.
 
 Hosted on AWS Lambda
 
-## Additional Info:
+## Additional Info
 
 Inline query ends with double semicolon so OpenAI API won't be spammed because this bot is intended to be deployed on a serverless platform without a database or cache

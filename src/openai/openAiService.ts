@@ -1,6 +1,6 @@
-import openai from './openAiConfig';
+import { openai } from './openAiConfig';
 
-const createChatCompletion = async (input: string) => {
+export const createChatCompletion = async (input: string) => {
   const prompt = `
 This is a conversation between an AI chatbot that fulfills the prompts that are given to it in a friendly tone.
 
@@ -26,7 +26,3 @@ AI chatbot:
 
   return textReponse;
 };
-
-export {
-  createChatCompletion,
-}
