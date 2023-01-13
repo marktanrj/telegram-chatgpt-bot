@@ -7,7 +7,6 @@ export const bot = new Telegraf(process.env.BOT_TOKEN!);
 
 bot.use(async (ctx: any, next: any) => {
   const allowAllAccess = process.env.TELEGRAM_WHITELIST_USERNAMES === undefined;
-  console.log(process.env.TELEGRAM_WHITELIST_USERNAMES)
   if (allowAllAccess) {
     await next();
     return;
