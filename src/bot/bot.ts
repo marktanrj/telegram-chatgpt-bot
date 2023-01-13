@@ -1,9 +1,29 @@
-import { Composer } from 'telegraf';
-import { createChatCompletion } from "./openai/openAiService";
+import { Telegraf } from 'telegraf';
+import { createChatCompletion } from "../openai/openAiService";
 
 const botUsername = process.env.BOT_USERNAME;
 
-const startCommand = Composer.command(['/start', '/help'], async (ctx: any) => {
+export const bot = new Telegraf(process.env.BOT_TOKEN!);
+
+bot.use(async (ctx: any, next: any) => {
+  const allowAllAccess = process.env.TELEGRAM_WHITELIST_USERNAMES === undefined;
+  console.log(process.env.TELEGRAM_WHITELIST_USERNAMES)
+  if (allowAllAccess) {
+    await next();
+    return;
+  }
+
+  const whitelist = process.env.TELEGRAM_WHITELIST_USERNAMES!.split(',');
+  const isNotInWhitelist = !whitelist.includes(ctx.message.from.username);
+  if (isNotInWhitelist) {
+    await ctx.reply('You are not allowed to use this bot');
+    return;
+  }
+
+  await next();
+});
+
+bot.command(['/start', '/help'], async (ctx: any) => {
   const msg = `
 Hello, this bot will reply like ChatGPT
 
@@ -18,7 +38,7 @@ Example with inline query:
   await ctx.reply(msg)
 })
 
-const chatCommand = Composer.command('/c', async (ctx: any) => {
+bot.command('/c', async (ctx: any) => {
   try {
     await validateCommandInput(ctx);
     const text = ctx.message.text;
@@ -43,7 +63,7 @@ async function validateCommandInput(ctx: any) {
   }
 }
 
-const chatInlineQuery = Composer.on('inline_query', async (ctx: any) => {
+bot.on('inline_query', async (ctx: any) => {
   try {
     const query = ctx.inlineQuery.query;
 
@@ -74,9 +94,3 @@ const chatInlineQuery = Composer.on('inline_query', async (ctx: any) => {
     return;
   }
 });
-
-export const botComposer = [
-  startCommand,
-  chatCommand,
-  chatInlineQuery
-]

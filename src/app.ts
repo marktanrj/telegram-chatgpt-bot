@@ -1,8 +1,7 @@
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-import { Telegraf } from "telegraf";
-import { botComposer } from "./bot";
+import { bot } from "./bot/bot";
 
 export const createApp = async () => {
   const app = express();
@@ -11,9 +10,6 @@ export const createApp = async () => {
   app.use(cors());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-
-  const bot = new Telegraf(process.env.BOT_TOKEN!);
-  bot.use(...botComposer);
 
   app.use(bot.webhookCallback('/webhook'));
 
